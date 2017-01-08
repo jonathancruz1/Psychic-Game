@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Psychic Game</title>
+      <style>
+      h1{
+        font-size: 46px;
+        color: #b570c3;
+        margin: 0;
+        font-family: Century Gothic, sans-serif;
+      }
+      h2{
+        font-size: 30px;
+        font-weight: normal;
+        font-family: Century Gothic, sans-serif;
+        color: #f0c882;
+        margin: 20px;
+      }
+      p{
+        color: #FFFFFF;
+        margin: 10px;
+        font-size: 25px;
+        font-family: Century Gothic, sans-serif;
+      }
+      img{
+        width:100%;
+        height:auto;
+      }
+      .wrapper{
+        width: 100%
+        margin: 0 auto;
+      }
+      .container{
+        width: 100%;
+        max-width: 800px;
+        background-color: #19120c;
+        margin-left:auto;
+        margin-right:auto;
+        text-align: center;
+        padding-bottom:20px;
+      }
+      .guesses-left{
+        color: #f0c882;
+      }
+      .guess{
+        color: #b570c3;
+        margin-bottom: 15px;
+      }
+      </style>
+  </head>
+    <body>
+    <div class="wrapper">
+      <div class="container">
+      <img src="http://i64.tinypic.com/2zfuy3r.jpg">
+
+    <h1>Psychic Game</h1>
+
+    <h2>Guess what letter I'm thinking of!</h2>
+
+    <p>Wins: <span id="wins">0</span></p>
+
+    <p>Losses: <span id="losses">0</span></p>
+
+    <p class="guesses-left">Guesses Left: <span id="guessesLeft"></span></p>
+
+    <p class="guess">Your Guesses So Far: <span id="userGuesses"></span></p>
+      </div>
+    </div>
+      
+    <script type="text/javascript">
+
+      // Letters I chose for the game (My name)
+      var letters = ["j", "o", "n", "c", "r", "u", "z"];
+
+      // Array holds the user's guessed letters
+      var guessedLetters = [];
+
+      // This variable will randomly be assigned to one of the letters
+      var letterToGuess = null;
+
+      // Total user guesses and user's guesses left
+      var totalGuesses = 10;
+      var guessesLeft = 10;
+
+      // Wins and losses counter
+      var wins = 0;
+      var losses = 0;
+
+      // Function: Update user on how many guesses are left and displays on the HTML
+      var updateGuessesLeft = function() {
+        document.querySelector("#guessesLeft").innerHTML = guessesLeft;
+      };
+      // Function: Get a random letter for the user to guess (letters are j,o,n,c,r,u,z)
+      var updateLetterToGuess = function() {
+        this.letterToGuess = this.letters[Math.floor(Math.random() * this.letters.length)];
+      };
+      // Function: User's guesses displayed on HTML
+      var updateUserGuesses = function() {
+        document.querySelector("#userGuesses").innerHTML = guessedLetters.join(", ");
+      };
+
+      // Function: Will be called when everything resets
+      var reset = function() {
+        totalGuesses = 10;
+        guessesLeft = 10;
+        guessedLetters = [];
+        updateLetterToGuess();
+        updateGuessesLeft();
+        updateUserGuesses();
+      };
+
+      // Execute on page load.
+      updateLetterToGuess();
+      updateGuessesLeft();
+
+      // Function: This will capture the keyboard clicks.
+      document.onkeyup = function(event) {
+        // This will reduce the guesses by one
+        guessesLeft--;
+        // Lowercase the letter
+        var letter = String.fromCharCode(event.keyCode).toLowerCase();
+        // Then add the guess to the guessedLetters array
+        guessedLetters.push(letter);
+        // Then its going to run the update functions
+        updateGuessesLeft();
+        updateUserGuesses();
+
+        // This will check if the letter is a match
+        if (letter === letterToGuess) {
+        // If the letter matches the user gets a win. HTML gets updated with a win.
+        wins++;
+        document.querySelector("#wins").innerHTML = wins;
+        alert("You WON! You guessed right!")
+        // Game resets afterwards
+        reset();
+        }
+
+        // This will check if user runs out of guesses
+        if (guessesLeft === 0) {
+        // If the user runs out, user will get a loss. HTML gets updated with a loss.
+        losses++;
+        document.querySelector("#losses").innerHTML = losses;
+        alert("You lost, but guess again!");
+        // Game resets afterwards
+        reset();
+        }
+      };
+    </script>
+
+  </body>
+</html>
